@@ -10,5 +10,6 @@ app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({ extended: true }));
 app.use("/user", routes.user);
 app.use("/auth", routes.auth);
+app.use("/event", routes.event);
 
 module.exports = app;
