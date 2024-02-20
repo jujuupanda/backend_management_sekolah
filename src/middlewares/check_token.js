@@ -8,7 +8,7 @@ const checkToken = (req, res, next) => {
 
   // Jika token tidak tersedia
   if (!token) {
-    return res.status(401).json({ message: "Token dibutuhkan!" });
+    return res.status(401).json({ message: "Token dibutuhkan!!" });
   }
 
   // Verifikasi token
@@ -16,7 +16,7 @@ const checkToken = (req, res, next) => {
   if (tokenValid) {
     next();
   } else {
-    return res.status(401).json({ message: "Token tidak valid!" });
+    return res.status(401).json({ message: "Token tidak valid!!" });
   }
 };
 module.exports = checkToken;
