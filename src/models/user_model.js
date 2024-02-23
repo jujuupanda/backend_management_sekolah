@@ -6,6 +6,7 @@ const Students = db.define(
     id: {
       type: DataTypes.INTEGER,
       primaryKey: true,
+      autoIncrement: true,
     },
     username: {
       type: DataTypes.STRING,
@@ -20,13 +21,14 @@ const Students = db.define(
       type: DataTypes.STRING,
       allowNull: false,
     },
-    nisn: {
-      type: DataTypes.STRING,
-    },
     name: {
       type: DataTypes.STRING,
       allowNull: false,
     },
+    nisn: {
+      type: DataTypes.STRING,
+    },
+
     email: {
       type: DataTypes.STRING,
     },
@@ -35,7 +37,7 @@ const Students = db.define(
     },
   },
   {
-    schema: "management",
+    schema: "public",
     freezeTableName: true,
     timestamps: false,
     createdAt: false,
@@ -48,6 +50,7 @@ const Teachers = db.define(
     id: {
       type: DataTypes.INTEGER,
       primaryKey: true,
+      autoIncrement: true,
     },
     username: {
       type: DataTypes.STRING,
@@ -62,12 +65,12 @@ const Teachers = db.define(
       type: DataTypes.STRING,
       allowNull: false,
     },
-    nip: {
-      type: DataTypes.STRING,
-    },
     name: {
       type: DataTypes.STRING,
       allowNull: false,
+    },
+    nip: {
+      type: DataTypes.STRING,
     },
     email: {
       type: DataTypes.STRING,
@@ -77,7 +80,7 @@ const Teachers = db.define(
     },
   },
   {
-    schema: "management",
+    schema: "public",
     freezeTableName: true,
     timestamps: false,
     createdAt: false,

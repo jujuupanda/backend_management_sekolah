@@ -18,7 +18,7 @@ const Events = db.define(
       allowNull: false,
     },
     date: {
-      type: DataTypes.STRING,
+      type: DataTypes.DATE,
       allowNull: false,
     },
     event_data: {
@@ -26,7 +26,7 @@ const Events = db.define(
     },
   },
   {
-    schema: "management",
+    schema: "public",
     freezeTableName: true,
     timestamps: false,
     createdAt: false,
