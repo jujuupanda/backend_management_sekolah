@@ -101,21 +101,21 @@ controller.addUser = async (req, res) => {
             message: `Berhasil membuat user ${username}!`,
           });
         } else {
-          res.status(402).json({
+          res.status(400).json({
             message: `User ${username} gagal dibuat!`,
           });
         }
         break;
 
       default:
-        res.status(402).json({
+        res.status(400).json({
           message:
-            "Terjadi kesalahan! Role hanya tersedua 1 untuk Guru dan 2 untuk Murid!",
+            "Terjadi kesalahan! Role hanya tersedia 1 untuk Guru dan 2 untuk Murid!",
         });
         break;
     }
   } catch (err) {
-    res.status(402).json({
+    res.status(400).json({
       message: "Terjadi kesalahan!",
       error: err,
     });
