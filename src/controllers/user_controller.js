@@ -11,6 +11,12 @@ controller.getUser = async (req, res) => {
   try {
     //Find user by username
     const user = await model.userModel.Users.findOne({
+      include: [
+        {
+          model: model.userModel.MajorClass,
+          include: [{ model: model.userModel.Lessons }],
+        },
+      ],
       where: {
         username: username,
       },
