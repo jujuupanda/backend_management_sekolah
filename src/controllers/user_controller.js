@@ -7,50 +7,34 @@ const controller = {};
 //Find Data Single User
 controller.getUser = async (req, res) => {
   const { username } = req.params;
-  const { role } = req.query;
-  //Find user by username
-  switch (role) {
-    case "1":
-      const teacher = await model.userModel.Teachers.findOne({
-        where: {
-          username: username,
-        },
-      });
-      if (teacher) {
-        res.status(200).json({
-          message: "Berhasil",
-          data: teacher,
-        });
-      } else {
-        res.status(402).json({
-          message: `Data dengan user ${username} tidak ditemukan!`,
-        });
-      }
 
-      break;
-    case "2":
-      const student = await model.userModel.Students.findOne({
-        where: {
-          username: username,
+  try {
+    //Find user by username
+    const user = await model.userModel.Users.findOne({
+      include: [
+        {
+          model: model.userModel.MajorClass,
+          include: [{ model: model.userModel.Lessons }],
         },
+      ],
+      where: {
+        username: username,
+      },
+    });
+    if (user) {
+      res.status(200).json({
+        message: "Berhasil",
+        data: user,
       });
-      if (student) {
-        res.status(200).json({
-          message: "Berhasil",
-          data: student,
-        });
-      } else {
-        res.status(402).json({
-          message: `Data dengan user ${username} tidak ditemukan!`,
-        });
-      }
-      break;
-
-    default:
-      res.status(402).json({
-        message: "Terjadi kesalahan!",
+    } else {
+      res.status(401).json({
+        message: `Data dengan user ${username} tidak ditemukan!`,
       });
-      break;
+    }
+  } catch (error) {
+    res.status(400).json({
+      message: error,
+    });
   }
 };
 
@@ -61,63 +45,68 @@ controller.addUser = async (req, res) => {
   try {
     const passwordHashed = await bcrypt.hash(password, 10);
 
-    switch (role) {
-      case "1":
-        const teacher = await model.userModel.Teachers.create(
-          {
-            username: username,
-            password: passwordHashed,
-            role: role,
-            name: name,
-          },
-          {
-            field: ["username", "password", "role", "name"],
-          }
-        );
-        if (teacher) {
-          res.status(200).json({
-            message: `Berhasil membuat user ${username}!`,
-          });
-        } else {
-          res.status(402).json({
-            message: `User ${username} gagal dibuat!`,
-          });
+    if (role == "1" || role == "2" || role == "3") {
+      const user = await model.userModel.Users.create(
+        {
+          username: username,
+          password: passwordHashed,
+          role: role,
+          name: name,
+        },
+        {
+          field: ["username", "password", "role", "name"],
         }
-        break;
-      case "2":
-        const student = await model.userModel.Students.create(
-          {
-            username: username,
-            password: passwordHashed,
-            role: role,
-            name: name,
-          },
-          {
-            field: ["username", "password", "role", "name"],
-          }
-        );
-        if (student) {
-          res.status(200).json({
-            message: `Berhasil membuat user ${username}!`,
-          });
-        } else {
-          res.status(400).json({
-            message: `User ${username} gagal dibuat!`,
-          });
-        }
-        break;
-
-      default:
-        res.status(400).json({
-          message:
-            "Terjadi kesalahan! Role hanya tersedia 1 untuk Guru dan 2 untuk Murid!",
+      );
+      if (user) {
+        res.status(200).json({
+          message: `Berhasil membuat user ${username}!`,
         });
-        break;
+      } else {
+        res.status(400).json({
+          message: `User ${username} gagal dibuat!`,
+        });
+      }
+    } else {
+      res.status(400).json({
+        message: "Terjadi kesalahan! Role hanya tersedia 1, 2, 3!",
+      });
     }
   } catch (err) {
     res.status(400).json({
       message: "Terjadi kesalahan!",
       error: err,
+    });
+  }
+};
+
+controller.getMajorClass = async (req, res) => {
+  const { id } = req.params;
+
+  try {
+    const majorclass = await model.majorclassModel.MajorClass.findOne({
+      include: [
+        {
+          model: model.majorclassModel.Lessons,
+        },
+      ],
+      where: {
+        id: id,
+      },
+    });
+    if (majorclass) {
+      res.status(200).json({
+        message: "Berhasil!",
+        data: majorclass,
+      });
+    } else {
+      res.status(400).json({
+        message: "Kelas Tidak Ada!",
+      });
+    }
+  } catch (error) {
+    res.status(401).json({
+      message: "Terjadi kesalahan!",
+      error: error,
     });
   }
 };
