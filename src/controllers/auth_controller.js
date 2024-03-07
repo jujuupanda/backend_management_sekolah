@@ -11,53 +11,21 @@ controller.login = async (req, res) => {
 
   try {
     //Check if user is exist
-    //Student
-    const student = await model.userModel.Students.findOne({
-      where: {
-        username: username,
-      },
-    });
-    //Teacher
-    const teacher = await model.userModel.Teachers.findOne({
+    const user = await model.userModel.Users.findOne({
       where: {
         username: username,
       },
     });
     //Check user success or failed login
-    if (student) {
+    if (user) {
       //Check users password is valid
-      const passwordValid = await bcrypt.compare(password, student.password);
+      const passwordValid = await bcrypt.compare(password, user.password);
 
       if (passwordValid) {
         const token = jwt.sign(
           {
-            username: student.username,
-            role: student.role,
-          },
-          process.env.JWT_SECRET,
-          {
-            expiresIn: process.env.JWT_EXP,
-            noTimestamp: true,
-          }
-        );
-        res.status(200).json({
-          message: "Berhasil Login",
-          data: token,
-        });
-      } else {
-        res.status(401).json({
-          message: "Password salah!",
-        });
-      }
-    } else if (teacher) {
-      //Check users password is valid
-      const passwordValid = await bcrypt.compare(password, teacher.password);
-
-      if (passwordValid) {
-        const token = jwt.sign(
-          {
-            username: teacher.username,
-            role: teacher.role,
+            username: user.username,
+            role: user.role,
           },
           process.env.JWT_SECRET,
           {
@@ -80,8 +48,8 @@ controller.login = async (req, res) => {
       });
     }
   } catch (err) {
-    res.status(402).json({
-      message: "Terjadi kesalahan!",
+    res.status(401).json({
+      message: "Terjadi kesalahan saat login!",
       error: err,
     });
   }
