@@ -25,13 +25,13 @@ const Users = db.define(
       type: DataTypes.STRING,
       allowNull: false,
     },
-    identity_number: {
-      type: DataTypes.STRING,
-    },
     email: {
       type: DataTypes.STRING,
     },
     address: {
+      type: DataTypes.STRING,
+    },
+    identity_number: {
       type: DataTypes.STRING,
     },
     image: {
