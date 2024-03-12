@@ -1,5 +1,4 @@
 const express = require("express");
-const dotenv = require("dotenv").config();
 const routes = require("../routes/routes");
 const bodyParser = require("body-parser");
 
@@ -11,5 +10,6 @@ app.use(bodyParser.urlencoded({ extended: true }));
 app.use("/user", routes.user);
 app.use("/auth", routes.auth);
 app.use("/event", routes.event);
+app.use("/schedule", routes.schedule);
 
 module.exports = app;

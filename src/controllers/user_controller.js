@@ -14,7 +14,6 @@ controller.getUser = async (req, res) => {
       include: [
         {
           model: model.userModel.MajorClass,
-          include: [{ model: model.userModel.Lessons }],
         },
       ],
       where: {
@@ -71,40 +70,8 @@ controller.addUser = async (req, res) => {
         message: "Terjadi kesalahan! Role hanya tersedia 1, 2, 3!",
       });
     }
-  } catch (err) {
-    res.status(400).json({
-      message: "Terjadi kesalahan!",
-      error: err,
-    });
-  }
-};
-
-controller.getMajorClass = async (req, res) => {
-  const { id } = req.params;
-
-  try {
-    const majorclass = await model.majorclassModel.MajorClass.findOne({
-      include: [
-        {
-          model: model.majorclassModel.Lessons,
-        },
-      ],
-      where: {
-        id: id,
-      },
-    });
-    if (majorclass) {
-      res.status(200).json({
-        message: "Berhasil!",
-        data: majorclass,
-      });
-    } else {
-      res.status(400).json({
-        message: "Kelas Tidak Ada!",
-      });
-    }
   } catch (error) {
-    res.status(401).json({
+    res.status(400).json({
       message: "Terjadi kesalahan!",
       error: error,
     });
